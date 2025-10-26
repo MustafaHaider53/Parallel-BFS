@@ -2,6 +2,8 @@
 #include <vector>
 #include <list>
 #include <queue>
+#include <chrono>   // For timing
+#include <iomanip>  // For setting output precision
 using namespace std;
 
 class Graph {
@@ -31,10 +33,14 @@ public:
     }
 
     void bfs(){
+        // --- Start Timer ---
+        auto start_time = chrono::high_resolution_clock::now();
+
         queue<int> Q;
         vector<bool> vis(V, false);
         Q.push(0);
         vis[0] = true;
+
         while(Q.size() > 0){
             int u = Q.front();
             Q.pop();
@@ -46,7 +52,16 @@ public:
                 }
             }
         }
-        cout << endl;
+        cout << endl; // Newline after traversal
+
+        // --- Stop Timer ---
+        auto end_time = chrono::high_resolution_clock::now();
+        
+        // Calculate and print the total duration
+        chrono::duration<double> duration = end_time - start_time;
+        
+        cout << "BFS execution time: " << fixed 
+             << setprecision(8) << duration.count() << " seconds" << endl;
 
     }
 };
@@ -61,14 +76,11 @@ int main() {
     g.addEdge(2, 6);
 
     cout << "BFS Traversal starting from vertex 0:" << endl;
-    g.bfs();
+    g.bfs(); // This will now print the traversal AND the time
+
+    cout << "\nGraph Adjacency List:" << endl;
     g.printGraph();
 
     return 0;
 }
-
-
-
-
-
 
